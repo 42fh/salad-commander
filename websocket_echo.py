@@ -1,13 +1,10 @@
-#!/usr/bin/env python
-
 # example code form https://websockets.readthedocs.io/en/stable/
 
 import time
 import math
 import asyncio
+import os
 from websockets.asyncio.server import serve
-
-print("started ...")
 
 posXY = [10,10]
 lastMsg = time.time()
@@ -19,7 +16,6 @@ def foo():
     if (time.time() - lastMsg < 3):
         numberA = posXY[1]
         numberB = posXY[0]
-    print("numberAB", numberA, numberB)
     return ("[" + str(numberA) + ", " + str(numberB) + "]")
 
 
@@ -33,7 +29,7 @@ async def echo(websocket):
         await websocket.send(foo())
 
 async def main():
-    async with serve(echo, "localhost", 8765):
+    async with serve(echo, "", os.environ["PORT"]):
         await asyncio.get_running_loop().create_future()  # run forever
 
 asyncio.run(main())
