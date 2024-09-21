@@ -1,0 +1,47 @@
+<h1 style="font-family: Helvetica, sans-serif;">web socket demo</h1>
+
+<body style="padding: 2cm;">
+    <div id="myDiv" style="height: 500px; width: 500px; outline-style: dotted;">
+        <p id="wand" style="font-size: 48pt; position: relative; 
+            top: 400px; left: 400px;" >🪄</p>
+    </div>
+</body>
+
+<script>
+    var array = [20, 20];
+    var socket_open = false;
+    let div = document.getElementById("myDiv");
+
+    echosocket = new WebSocket("ws://localhost:8765/");
+
+    echosocket.onopen    = (() => socket_open = true);
+    echosocket.onmessage = (msg => {
+
+        array = JSON.parse(msg.data);
+        var img = document.getElementById("wand");
+        img.style.top = 25 * array[0];
+        img.style.left = 25 * array[1];
+    });
+    
+
+    function mouseEvent(ev){
+        let x = Math.max(0, (ev.clientX - div.getBoundingClientRect().left) / 25 )
+        let y = Math.max(0, (ev.clientY - div.getBoundingClientRect().top) / 25 )
+
+        if (socket_open) {echosocket.send((x) + "," + (y))}
+        console.log(x, y)
+    }
+    div.onmousemove = mouseEvent;
+
+
+    // function main() {
+
+    //     // var img = document.getElementById("wand");
+    //     // img.style.top = 18 * array[0] + 10;
+    //     // img.style.left = 18 * array[1] + 10;
+
+    //     // if (socket_open) {echosocket.send("client")}
+    //     console.log(array);
+    // }
+    // setInterval(main, 1000);
+</script>

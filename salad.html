@@ -1,0 +1,30 @@
+<!DOCTYPE html><html><meta charset="UTF-8"><body>
+<body style="padding: 2cm; font-family: Helvetica, sans-serif;">
+    <h1>web socket demo</h1>
+    <p>use the commander page to steer all open salad pages</p>
+    <div style="height: 500px; width: 500px;">
+        <p id="saladimg" style="font-size: 48pt; position: relative; 
+            top: 100px; left: 100px;" >	&#x1F96C; </p>
+    </div>
+</body></html> 
+
+<script>
+    var array = [10, 10];
+    var socket_open = false;
+
+    echosocket = new WebSocket("ws://localhost:8765/");
+
+    echosocket.onopen    = (() => socket_open = true);
+    echosocket.onmessage = (msg => array = JSON.parse(msg.data));
+
+    function main() {
+
+        let img = document.getElementById("saladimg");
+        img.style.top = (25 * array[0]) + "px";
+        img.style.left = (25 * array[1]) + "px";
+
+        if (socket_open) {echosocket.send("client")}
+        console.log("array = ", array);
+    }
+    setInterval(main, 20);
+</script>
