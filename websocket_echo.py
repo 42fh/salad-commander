@@ -6,13 +6,13 @@ import asyncio
 import os
 from websockets.asyncio.server import serve
 
-posXY = [10,10]
+posXY = [0.4,0.4]
 lastMsg = time.time()
 
 def foo():
     t = time.time()
-    numberA = 10 * math.sin(17 * t / 10) + 10.0
-    numberB = 10 * math.cos(4 * t / 10) + 10.0
+    numberA = 0.5 * math.sin(17 * t / 10) + 0.5
+    numberB = 0.5 * math.cos( 4 * t / 10) + 0.5
     if (time.time() - lastMsg < 3):
         numberA = posXY[1]
         numberB = posXY[0]
